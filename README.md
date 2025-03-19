@@ -1,26 +1,30 @@
 # StockMind 📈  
 
-**StockMind** is a **Stock peer competitor and Stock Analysis** tool that identifies **peer competitors** for a company and fetches its **live stock prices**.  
+**StockMind** is a web-based **Stock Competitor Analysis and Market Comparison** tool that helps investors identify peer competitors for companies and analyze their stock performance in comparison.
 
 ## 🚀 Features  
-✅ **Competitor Analysis** – Uses **Gemini LLM** to find peer competitors based on the company's industry.  
-✅ **Real-Time Stock Prices** – Fetches **live stock data** using the **yfinance** library.  
+✅ **Competitor Analysis** – Uses **Gemini LLM** to find peer competitors based on the company's sector and industry.  
+✅ **Real-Time Stock Data** – Fetches **historical stock price data** using the **yfinance** library.  
 ✅ **Automated Ticker Retrieval** – Extracts the stock ticker symbol from **Alpha Vantage API**.  
-✅ **Company Information Fetching** – Uses **Wikipedia API** to gather company details.  
+✅ **Company Information** – Uses **Wikipedia API** to gather company descriptions.  
+✅ **Market Cap Comparison** – Compares market capitalization of top competitors.
+✅ **Interactive Charts** – Visualizes stock price trends for better comparison.
 ✅ **US Market Focused** – Currently designed for **United States** stock exchanges.  
 
 ## 🔧 Tech Stack  
-- **Python** 🐍  
-- **Wikipedia API** – Fetches company descriptions  
-- **Gemini LLM** – Identifies peer competitors  
-- **Alpha Vantage API** – Retrieves stock ticker symbols  
-- **yfinance** – Fetches real-time stock prices  
+- **Backend**: Python with Flask 🐍  
+- **Frontend**: HTML, CSS, JavaScript with interactive charts
+- **APIs**:
+  - **Wikipedia API** – Fetches company descriptions  
+  - **Gemini 1.5 Flash LLM** – Identifies peer competitors by sector  
+  - **Alpha Vantage API** – Retrieves stock ticker symbols  
+  - **yfinance** – Fetches historical stock price data and market cap information
 
 ## 📜 Installation  
 
 1️⃣ **Clone the repository**  
 ```bash
-git clone https://github.com/sharathchandra-patil/StockMind.git
+git clone https://github.com/yourusername/StockMind.git
 cd StockMind
 ```  
 
@@ -29,27 +33,39 @@ cd StockMind
 pip install -r requirements.txt
 ```  
 
-3️⃣ **Set up API keys**  
-- Get an **Alpha Vantage API Key** from [Alpha Vantage](https://www.alphavantage.co/support/#api-key).  
-- Store it in an **.env file** or set it in your environment variables:  
-```bash
-ALPHA_VANTAGE_API_KEY=your_api_key
-```  
+3️⃣ **API Keys**  
+The application uses the following API keys that are already included in the code:
+- Alpha Vantage API Key
+- Gemini API Key
+
+You may want to replace them with your own keys for production use by updating the variables in BACK.py or moving them to environment variables.
 
 ## 🚀 Usage  
 
-Run the script and input a company name:  
+1. Run the Flask application:
 ```bash
-python stockmind.py
+python BACK.py
 ```  
 
-Example Output:  
+2. Open your browser and navigate to:
 ```
-Company: Apple Inc. (AAPL)  
-Industry: Technology  
-Peer Competitors: Microsoft, Google, Amazon  
-Current Stock Price: $180.32  
-```   
+http://127.0.0.1:5000/
+```
+
+3. Enter a company name in the search box and click "Analyze" to see:
+   - Company description
+   - Stock price history
+   - Competitive sectors
+   - Top competitors with their market capitalization and stock performance
+
+## 📊 How It Works
+
+1. The application takes a company name as input
+2. Retrieves the company description from Wikipedia
+3. Uses Gemini LLM to identify sectors and competitors
+4. Fetches stock ticker symbols from Alpha Vantage
+5. Gets historical stock data and market cap using yfinance
+6. Presents the analysis in an interactive web interface
 
 ## 🤝 Contributing  
 Contributions are welcome! Feel free to fork the repo and submit a pull request.  

@@ -230,3 +230,17 @@ footer .social-icons a {
 footer .social-icons a:hover {
   color: #5ab2ff;
 }
+
+#errorSection {
+  margin-bottom: 20px;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 5px solid #c62828;
+  margin-bottom: 20px;
+  font-weight: 500;
+}

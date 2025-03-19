@@ -32,7 +32,10 @@
   </section> 
  
   <section id="results" class="section" style="display: none;"> 
-    <h2>Results</h2> 
+    <h2>Results</h2>
+    <div id="errorSection" style="display: none;">
+      <div class="error-message" id="errorMessage"></div>
+    </div>
     <div id="descriptionSection" style="display: none;"> 
       <h3>Company Description</h3> 
       <div class="description" id="description"></div> 
@@ -75,6 +78,7 @@
     const companyForm = document.getElementById('company-form'); 
     const loadingText = document.getElementById('loading'); 
     const resultsSection = document.getElementById('results'); 
+    const errorSection = document.getElementById('errorSection');
     const descriptionSection = document.getElementById('descriptionSection'); 
     const tickerSection = document.getElementById('tickerSection'); 
     const stockPriceSection = document.getElementById('stockPriceSection'); 
@@ -91,13 +95,25 @@
       } 
  
       loadingText.style.display = 'block'; 
+      
+      // Reset visibility of all sections
+      errorSection.style.display = 'none';
+      descriptionSection.style.display = 'none';
+      tickerSection.style.display = 'none';
+      stockPriceSection.style.display = 'none';
+      graphSection.style.display = 'none';
+      competitorsSection.style.display = 'none';
+      topCompetitorsSection.style.display = 'none';
  
       try { 
         const response = await fetch(`/analyze_company?company_name=${encodeURIComponent(companyName)}`); 
         const data = await response.json(); 
+        
+        // Always display the results section
+        resultsSection.style.display = 'block';
  
         if (data.success) { 
-          resultsSection.style.display = 'block'; 
+          // Display successful result sections
           descriptionSection.style.display = 'block'; 
           tickerSection.style.display = 'block'; 
           stockPriceSection.style.display = 'block'; 
@@ -120,7 +136,7 @@
  
           renderGraph(data.stock_prices, data.time_labels); 
  
-          if (data.top_competitors.length > 0) { 
+          if (data.top_competitors && data.top_competitors.length > 0) { 
             const topCompetitorsList = document.getElementById('topCompetitorsList'); 
             topCompetitorsList.innerHTML = ''; 
  
@@ -133,12 +149,42 @@
             topCompetitorsSection.style.display = 'block'; 
             renderTopCompetitorsGraph(data.top_competitors); 
           } 
-        } else { 
-          alert(data.error || 'Error fetching data.'); 
+        } else {
+          // Display error message
+          errorSection.style.display = 'block';
+          document.getElementById('errorMessage').textContent = data.error || 'Error analyzing company.';
+          
+          // Still show description if available
+          if (data.description) {
+            descriptionSection.style.display = 'block';
+            document.getElementById('description').textContent = data.description;
+          }
+          
+          // Show competitors if available (partial results)
+          if (data.competitors) {
+            competitorsSection.style.display = 'block';
+            const competitorsList = document.getElementById('competitorsList');
+            competitorsList.textContent = '';
+            data.competitors.forEach((sector) => {
+              competitorsList.textContent += `${sector.name}\n`;
+              sector.competitors.forEach((competitor) => {
+                competitorsList.textContent += `\t${competitor}\n`;
+              });
+              competitorsList.textContent += `\n`;
+            });
+          }
+          
+          // Show ticker if available
+          if (data.ticker) {
+            tickerSection.style.display = 'block';
+            document.getElementById('ticker').textContent = data.ticker;
+          }
         } 
       } catch (error) { 
-        console.error('Error:', error); 
-        alert('Error fetching data.'); 
+        console.error('Error:', error);
+        resultsSection.style.display = 'block';
+        errorSection.style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Error connecting to the server. Please try again later.';
       } finally { 
         loadingText.style.display = 'none'; 
       } 
